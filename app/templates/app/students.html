@@ -1,0 +1,86 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'app/css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'app/css/tables.css' %}">
+
+
+<div class="contact-container">
+    <div class="contact-card">
+        <h2>Add Student</h2>
+        <span class="subtitle">New record</span>
+        <hr>
+
+        <form method="post" class="contact-form">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create">
+
+            {{ form.as_div }}
+
+            <div class="btn-wrap">
+                <button type="submit">Add Student</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="table-section">
+    <div class="table-card">
+        <div class="table-header">
+            <span class="table-header__title">Students</span>
+            <span class="count-badge">{{ students|length }}</span>
+        </div>
+
+        {% if students %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Full Name</th>
+                    <th>Date of Birth</th>
+                    <th>Active</th>
+                    <th>Created</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td class="cell--id">{{ student.id }}</td>
+                    <td>
+                        <a href="{% url 'student_edit' student.id %}" class="edit-link">
+                            {{ student.full_name }}
+                        </a>
+                    </td>
+                    <td>{{ student.birth_date|default:"—" }}</td>
+                    <td>
+                        {% if student.is_active %}
+                            <span class="pill pill--yes">Yes</span>
+                        {% else %}
+                            <span class="pill pill--no">No</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ student.created_at|date:"Y-m-d" }}</td>
+                    <td class="cell--actions">
+                        <form method="post"
+                              onsubmit="return confirm('Delete {{ student.full_name }}?')">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="student_id" value="{{ student.id }}">
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+        <div class="empty-state">No students yet. Add the first one above!</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

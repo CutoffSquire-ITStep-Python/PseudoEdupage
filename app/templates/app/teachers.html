@@ -1,0 +1,87 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'app/css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'app/css/tables.css' %}">
+
+
+<div class="contact-container">
+    <div class="contact-card">
+        <h2>Add Teacher</h2>
+        <span class="subtitle">New record</span>
+        <hr>
+
+        <form method="post" class="contact-form">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create">
+
+            {{ form.as_div }}
+
+            <div class="btn-wrap">
+                <button type="submit">Add Teacher</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-section">
+    <div class="table-card">
+        <div class="table-header">
+            <span class="table-header__title">Teachers</span>
+            <span class="count-badge">{{ teachers|length }}</span>
+        </div>
+
+        {% if teachers %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Degree</th>
+                    <th>Active</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for teacher in teachers %}
+                <tr>
+                    <td class="cell--id">{{ teacher.id }}</td>
+                    <td>
+                        <a href="{% url 'teacher_edit' teacher.id %}" class="edit-link">
+                            {{ teacher.full_name }}
+                        </a>
+                    </td>
+                    <td>{{ teacher.email }}</td>
+                    <td>{{ teacher.phone|default:"—" }}</td>
+                    <td>{{ teacher.get_degree_display }}</td>
+                    <td>
+                        {% if teacher.is_active %}
+                            <span class="pill pill--yes">Yes</span>
+                        {% else %}
+                            <span class="pill pill--no">No</span>
+                        {% endif %}
+                    </td>
+                    <td class="cell--actions">
+                        <form method="post"
+                              onsubmit="return confirm('Delete {{ teacher.full_name }}?')">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="teacher_id" value="{{ teacher.id }}">
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+        <div class="empty-state">No teachers yet. Add the first one above!</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

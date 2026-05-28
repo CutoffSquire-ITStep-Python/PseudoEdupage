@@ -1,0 +1,77 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'app/css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'app/css/tables.css' %}">
+
+
+<div class="contact-container">
+    <div class="contact-card">
+        <h2>Add Subject</h2>
+        <span class="subtitle">New record</span>
+        <hr>
+
+        <form method="post" class="contact-form">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create">
+
+            {{ form.as_div }}
+
+            <div class="btn-wrap">
+                <button type="submit">Add Subject</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-section">
+    <div class="table-card">
+        <div class="table-header">
+            <span class="table-header__title">Subjects</span>
+            <span class="count-badge">{{ subjects|length }}</span>
+        </div>
+
+        {% if subjects %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Subject Name</th>
+                    <th>Teacher</th>
+                    <th>Students</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subject in subjects %}
+                <tr>
+                    <td class="cell--id">{{ subject.id }}</td>
+                    <td>
+                        <a href="{% url 'subject_edit' subject.id %}" class="edit-link">
+                            {{ subject.name }}
+                        </a>
+                    </td>
+                    <td>{{ subject.teacher|default:"—" }}</td>
+                    <td>{{ subject.students.count }}</td>
+                    <td class="cell--actions">
+                        <form method="post"
+                              onsubmit="return confirm('Delete {{ subject.name }}?')">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="subject_id" value="{{ subject.id }}">
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+        <div class="empty-state">No subjects yet. Add the first one above!</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

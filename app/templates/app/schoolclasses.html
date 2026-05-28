@@ -1,0 +1,78 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'app/css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'app/css/tables.css' %}">
+
+<div class="contact-container">
+    <div class="contact-card">
+        <h2>Add Class</h2>
+        <span class="subtitle">New record</span>
+        <hr>
+
+        <form method="post" class="contact-form">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create">
+
+            {{ form.as_div }}
+
+            <div class="btn-wrap">
+                <button type="submit">Add Class</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-section">
+    <div class="table-card">
+        <div class="table-header">
+            <span class="table-header__title">School Classes</span>
+            <span class="count-badge">{{ classes|length }}</span>
+        </div>
+
+        {% if classes %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Abbreviation</th>
+                    <th>Full Name</th>
+                    <th>Number</th>
+                    <th>Students</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for class in classes %}
+                <tr>
+                    <td class="cell--id">{{ class.id }}</td>
+                    <td>
+                        <a href="{% url 'schoolclass_edit' class.id %}" class="edit-link">
+                            {{ class.abbreviation }}
+                        </a>
+                    </td>
+                    <td>{{ class.full_name|default:"—" }}</td>
+                    <td>{{ class.number }}</td>
+                    <td>{{ class.students.count }}</td>
+                    <td class="cell--actions">
+                        <form method="post"
+                              onsubmit="return confirm('Delete class {{ class.abbreviation }}?')">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="class_id" value="{{ class.id }}">
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+        <div class="empty-state">No classes yet. Add the first one above!</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

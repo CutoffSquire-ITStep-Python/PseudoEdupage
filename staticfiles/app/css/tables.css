@@ -1,0 +1,207 @@
+/* ── Table section ────────────────────────────────────────── */
+.table-section {
+    width: 100%;
+    padding: 40px 20px 80px;
+    background: #fef3e2;
+    background-image:
+        radial-gradient(ellipse at 90% 10%, rgba(255,160,50,.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 10% 90%, rgba(255,90,120,.1)  0%, transparent 50%);
+    display: flex;
+    justify-content: center;
+}
+
+.table-card {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 4px 0 #ffb020, 0 10px 0 rgba(255,176,32,.2), 0 24px 64px rgba(0,0,0,.08);
+    width: 900px;
+    max-width: 100%;
+    overflow: hidden;
+    animation: popIn .5s cubic-bezier(.34,1.56,.64,1) both;
+    animation-delay: .1s;
+    opacity: 0;
+}
+
+/* ── Table header ─────────────────────────────────────────── */
+.table-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 28px 36px 20px;
+    border-bottom: 1px solid #f0ece4;
+}
+
+.table-header__title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #1a1a2e;
+    letter-spacing: -.02em;
+}
+
+.count-badge {
+    background: linear-gradient(135deg, #ffb020, #ff6644);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: .75rem;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 50px;
+    letter-spacing: .06em;
+}
+
+/* ── Data table ───────────────────────────────────────────── */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Nunito', sans-serif;
+    font-size: .9rem;
+}
+
+.data-table thead th {
+    padding: 10px 16px;
+    text-align: left;
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #bbb;
+    border-bottom: 1px solid #f0ece4;
+    background: #fdfbf7;
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid #f8f4ed;
+    transition: background .15s;
+}
+
+.data-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+    background: #fffbf4;
+}
+
+.data-table td {
+    padding: 14px 16px;
+    color: #333;
+    vertical-align: middle;
+}
+
+.cell--id {
+    font-size: .75rem;
+    font-weight: 800;
+    color: #ccc;
+    width: 48px;
+}
+
+.cell--actions {
+    width: 100px;
+    text-align: right;
+    padding-right: 24px !important;
+}
+
+/* ── Edit link ────────────────────────────────────────────── */
+.edit-link {
+    font-weight: 700;
+    color: #1a1a2e;
+    text-decoration: none;
+    border-bottom: 2px solid #ffb020;
+    padding-bottom: 1px;
+    transition: color .15s, border-color .15s;
+}
+
+.edit-link:hover {
+    color: #ff6644;
+    border-color: #ff6644;
+}
+
+/* ── Delete button ────────────────────────────────────────── */
+.btn-delete {
+    background: none;
+    border: 2px solid #ffd0cc;
+    border-radius: 50px;
+    padding: 6px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #e53e3e;
+    cursor: pointer;
+    transition: background .2s, border-color .2s, transform .2s;
+}
+
+.btn-delete:hover {
+    background: #fff1f2;
+    border-color: #f56565;
+    transform: translateY(-1px);
+}
+
+.btn-delete:active {
+    transform: scale(.96);
+}
+
+/* ── Empty state ──────────────────────────────────────────── */
+.empty-state {
+    padding: 52px 24px;
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    font-size: .95rem;
+    color: #bbb;
+    font-weight: 600;
+}
+
+/* ── Status pills ─────────────────────────────────────────── */
+.pill {
+    display: inline-block;
+    font-family: 'Nunito', sans-serif;
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 50px;
+}
+
+.pill--yes {
+    background: #f0fff4;
+    color: #38a169;
+    border: 1.5px solid #c6f6d5;
+}
+
+.pill--no {
+    background: #fff5f5;
+    color: #e53e3e;
+    border: 1.5px solid #fed7d7;
+}
+
+/* ── Edit page back-link ──────────────────────────────────── */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Nunito', sans-serif;
+    font-size: .82rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #aaa;
+    text-decoration: none;
+    margin-bottom: 28px;
+    transition: color .15s;
+}
+
+.back-link:hover { color: #ff6644; }
+.back-link::before { content: '←'; font-size: 1rem; }
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 600px) {
+    .table-header { padding: 20px 20px 14px; }
+    .data-table thead { display: none; }
+    .data-table tbody tr { display: block; padding: 14px 20px; }
+    .data-table td { display: block; padding: 4px 0; border: none; }
+    .cell--actions { text-align: left; padding-right: 0 !important; margin-top: 10px; }
+    .table-section { padding: 20px 12px 60px; }
+}
